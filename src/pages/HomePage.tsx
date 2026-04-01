@@ -4,14 +4,72 @@ import { useNavigate } from "react-router-dom";
 export default function HomePage() {
   const navigate = useNavigate();
   const [showRazbanModal, setShowRazbanModal] = useState(false);
+  const [showDonateModal, setShowDonateModal] = useState(false);
   const [nick, setNick] = useState("");
   const [sending, setSending] = useState(false);
   const [razbanSent, setRazbanSent] = useState(false);
   const [razbanError, setRazbanError] = useState("");
 
   const handleDonate = () => {
-    alert("Простите, пока что не работает");
+    setShowDonateModal(true);
   };
+
+  const closeDonateModal = () => {
+    setShowDonateModal(false);
+  };
+
+  const donatePackages = [
+    {
+      id: "vip",
+      name: "VIP",
+      price: "10 руб",
+      icon: "⭐",
+      color: "#f59e0b",
+      glow: "rgba(245, 158, 11, 0.4)",
+      gradient: "linear-gradient(135deg, #f59e0b, #fbbf24)",
+      desc: "Базовые привилегии на сервере",
+    },
+    {
+      id: "premium",
+      name: "Премиум",
+      price: "200 руб",
+      icon: "💎",
+      color: "#6366f1",
+      glow: "rgba(99, 102, 241, 0.4)",
+      gradient: "linear-gradient(135deg, #6366f1, #8b5cf6)",
+      desc: "Расширенные возможности",
+    },
+    {
+      id: "blaze",
+      name: "Блейз",
+      price: "500 руб",
+      icon: "🔥",
+      color: "#ef4444",
+      glow: "rgba(239, 68, 68, 0.4)",
+      gradient: "linear-gradient(135deg, #ef4444, #f97316)",
+      desc: "Огненные привилегии",
+    },
+    {
+      id: "antigrifer",
+      name: "Антигрифер",
+      price: "1300 руб",
+      icon: "🛡️",
+      color: "#10b981",
+      glow: "rgba(16, 185, 129, 0.4)",
+      gradient: "linear-gradient(135deg, #10b981, #06b6d4)",
+      desc: "Максимальная защита",
+    },
+    {
+      id: "owner",
+      name: "Владелец",
+      price: "910 000 руб",
+      icon: "👑",
+      color: "#ec4899",
+      glow: "rgba(236, 72, 153, 0.5)",
+      gradient: "linear-gradient(135deg, #ec4899, #f59e0b, #ef4444)",
+      desc: "Абсолютная власть на сервере",
+    },
+  ];
 
   const handleRazbanSubmit = async () => {
     if (!nick.trim()) return;
@@ -94,6 +152,34 @@ export default function HomePage() {
           📋 Частые вопросы (FAQ)
         </button>
       </div>
+
+      {/* DONATE Modal */}
+      {showDonateModal && (
+        <div className="home-modal-overlay" onClick={closeDonateModal}>
+          <div className="home-modal donate-modal" onClick={(e) => e.stopPropagation()}>
+            <button className="home-modal-close" onClick={closeDonateModal}>✕</button>
+            <div className="home-modal-icon">💎</div>
+            <h3 className="home-modal-title">Магазин доната</h3>
+            <p className="home-modal-desc">Выберите пакет привилегий для сервера MOSTAXYI</p>
+            <div className="donate-packages">
+              {donatePackages.map((pkg) => (
+                <div
+                  key={pkg.id}
+                  className="donate-pkg"
+                  style={{ "--pkg-color": pkg.color, "--pkg-glow": pkg.glow } as React.CSSProperties}
+                >
+                  <div className="donate-pkg-icon">{pkg.icon}</div>
+                  <div className="donate-pkg-info">
+                    <div className="donate-pkg-name">{pkg.name}</div>
+                    <div className="donate-pkg-desc">{pkg.desc}</div>
+                  </div>
+                  <div className="donate-pkg-price">{pkg.price}</div>
+                </div>
+              ))}
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* RAZBAN Modal */}
       {showRazbanModal && (
@@ -547,10 +633,88 @@ export default function HomePage() {
           line-height: 1.6;
         }
 
+        /* DONATE MODAL */
+        .donate-modal {
+          max-width: 500px;
+          padding: 36px 32px 32px;
+        }
+
+        .donate-packages {
+          display: flex;
+          flex-direction: column;
+          gap: 10px;
+          margin-top: 4px;
+        }
+
+        .donate-pkg {
+          display: flex;
+          align-items: center;
+          gap: 14px;
+          background: rgba(255, 255, 255, 0.05);
+          border: 1px solid rgba(255, 255, 255, 0.1);
+          border-radius: 16px;
+          padding: 14px 18px;
+          cursor: pointer;
+          transition: background 0.2s, border-color 0.2s, box-shadow 0.2s, transform 0.15s;
+          position: relative;
+          overflow: hidden;
+        }
+
+        .donate-pkg::before {
+          content: '';
+          position: absolute;
+          left: 0;
+          top: 0;
+          bottom: 0;
+          width: 4px;
+          background: var(--pkg-color);
+          border-radius: 16px 0 0 16px;
+        }
+
+        .donate-pkg:hover {
+          background: rgba(255, 255, 255, 0.09);
+          border-color: var(--pkg-color);
+          box-shadow: 0 4px 20px var(--pkg-glow);
+          transform: translateY(-2px);
+        }
+
+        .donate-pkg-icon {
+          font-size: 28px;
+          line-height: 1;
+          flex-shrink: 0;
+        }
+
+        .donate-pkg-info {
+          flex: 1;
+          text-align: left;
+        }
+
+        .donate-pkg-name {
+          font-size: 16px;
+          font-weight: 700;
+          color: #fff;
+          margin-bottom: 2px;
+        }
+
+        .donate-pkg-desc {
+          font-size: 13px;
+          color: rgba(255, 255, 255, 0.45);
+        }
+
+        .donate-pkg-price {
+          font-size: 15px;
+          font-weight: 800;
+          color: var(--pkg-color);
+          white-space: nowrap;
+          flex-shrink: 0;
+        }
+
         @media (max-width: 500px) {
           .home-buttons { flex-direction: column; align-items: center; }
           .home-btn { width: 100%; max-width: 320px; justify-content: center; }
           .home-modal { padding: 28px 20px; }
+          .donate-modal { padding: 24px 16px 20px; }
+          .donate-pkg { padding: 12px 14px; }
         }
       `}</style>
     </div>
