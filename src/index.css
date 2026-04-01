@@ -176,6 +176,34 @@
   padding: 0 24px;
 }
 
+.faq-home-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 7px;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.85);
+  font-family: "Golos Text", sans-serif;
+  font-size: 13px;
+  font-weight: 500;
+  padding: 7px 16px;
+  border-radius: 100px;
+  margin-bottom: 16px;
+  cursor: pointer;
+  backdrop-filter: blur(8px);
+  transition:
+    background 0.2s,
+    color 0.2s,
+    transform 0.2s;
+  animation: faq-fade-up 0.5s ease both;
+}
+
+.faq-home-btn:hover {
+  background: rgba(255, 255, 255, 0.18);
+  color: #fff;
+  transform: translateX(-2px);
+}
+
 .faq-badge {
   display: inline-flex;
   align-items: center;
@@ -189,7 +217,7 @@
   border-radius: 100px;
   margin-bottom: 20px;
   backdrop-filter: blur(8px);
-  animation: faq-fade-up 0.5s ease both;
+  animation: faq-fade-up 0.5s ease 0.05s both;
 }
 
 .faq-title {

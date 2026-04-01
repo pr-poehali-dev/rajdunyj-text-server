@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { useNavigate } from "react-router-dom";
 import Icon from "@/components/ui/icon";
 
 const categories = [
@@ -90,6 +91,7 @@ const faqs = [
 ];
 
 export default function Index() {
+  const navigate = useNavigate();
   const [activeCategory, setActiveCategory] = useState("all");
   const [openId, setOpenId] = useState<number | null>(null);
   const [search, setSearch] = useState("");
@@ -113,6 +115,10 @@ export default function Index() {
       <header className="faq-hero">
         <div className="faq-hero-bg" />
         <div className="faq-container">
+          <button className="faq-home-btn" onClick={() => navigate("/")}>
+            <Icon name="Home" size={15} />
+            Главная страница
+          </button>
           <div className="faq-badge">Помощь новичкам</div>
           <h1 className="faq-title">
             Часто задаваемые
