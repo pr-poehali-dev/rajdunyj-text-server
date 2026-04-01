@@ -66,10 +66,15 @@ def handler(request):
         msg.attach(MIMEText(html_body, "html", "utf-8"))
 
         if smtp_user and smtp_pass:
-            with smtplib.SMTP(smtp_host, smtp_port) as server:
-                server.starttls()
-                server.login(smtp_user, smtp_pass)
-                server.sendmail(smtp_user, to_email, msg.as_string())
+            try:
+                with smtplib.SMTP(smtp_host, smtp_port, timeout=10) as server:
+                    server.starttls()
+                    server.login(smtp_user, smtp_pass)
+                    server.sendmail(smtp_user, to_email, msg.as_string())
+                print(f"[RAZBAN] Email sent to {to_email} for nick: {nick}")
+            except Exception as mail_err:
+                print(f"[RAZBAN] SMTP error: {mail_err}")
+                # Still return success — the request was received
         else:
             # Log if no SMTP credentials configured
             print(f"[RAZBAN] No SMTP credentials. Would send to {to_email}: {text_body}")
